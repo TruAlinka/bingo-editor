@@ -1,51 +1,227 @@
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
+
 body {
-  font-family: Arial, sans-serif;
-  margin: 32px;
+  font-family: 'Patrick Hand', Arial, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  background: #184356;
+  /* Две большие закрашенные "звезды" для антуража, можно добавить больше иконок */
+  background-image:
+    url('https://cdn.pixabay.com/photo/2013/07/12/17/00/star-150837_1280.png'),
+    url('https://cdn.pixabay.com/photo/2013/07/12/17/00/star-150837_1280.png');
+  background-size: 100px, 60px;
+  background-repeat: no-repeat, no-repeat;
+  background-position: 10% 25%, 85% 78%;
 }
 
 #main, #game {
-  max-width: 600px;
+  max-width: 900px;
+  width: 98vw;
+  margin: 0 auto;
+  background: #ffffff05;
+  padding: 18px 12px 44px 12px;
+  border-radius: 20px;
+  box-shadow: 0 9px 48px #0001, 0 0 0 8px #fff1;
+}
+
+h1, #gameTitle {
+  text-align: center;
+  font-size: 36px;
+  color: #fff;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 12px #001a;
+}
+
+label, select, textarea {
+  font-family: inherit;
+  font-size: 18px;
+  border-radius: 6px;
+  border: 1.7px solid #084b77;
 }
 
 textarea {
-  width: 400px;
-  min-width: 250px;
+  width: 380px;
+  min-width: 210px;
   resize: vertical;
   font-size: 16px;
   padding: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 18px;
+  background: #f6fcff;
+  border-radius: 9px;
+  border: 2.2px solid #ddeefe;
+  margin-top: 12px;
+  display: block;
 }
 
-button {
-  margin: 10px 5px 0 0;
-  padding: 8px 16px;
-  font-size: 16px;
-}
-
+/* === СЛОТЫ БУКВ === */
 #wordDisplay {
-  font-size: 32px;
-  font-weight: bold;
-  color: #1363c6;
-  margin-bottom: 20px;
-  min-height: 40px;
-  letter-spacing: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ffffff15;
+  border-radius: 32px;
+  margin: 38px auto 10px auto;
+  padding: 32px 17px 34px 17px;
+  box-shadow: 0 2px 33px #0001, 0 0 0 8px #fff3 inset;
+  max-width: 85vw;
+  min-height: 115px;
+}
+
+.slot {
+  position: relative;
+  display: inline-flex;
+  width: 75px;
+  height: 110px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #fff 0%, #e5edf4 66%, #cadbe7 100%);
+  box-shadow: 0 7px 40px #0002, 0 1.5px 0 #fff, 0 0 12px #abbedc59 inset;
+  border: 5px solid #d2dbe5;
+  margin: 0 10px;
+  font-family: 'Patrick Hand', Arial, sans-serif;
+  font-size: 70px;
+  color: #1c1b1c;
+  justify-content: center;
+  align-items: center;
+  transition: box-shadow 0.17s, background 0.13s;
+  overflow: hidden;
+  z-index: 2;
+}
+
+/* БЛИК */
+.slot::before {
+  content: "";
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  top: 16px;
+  height: 30px;
+  background: linear-gradient(90deg, #fff9 55%, #fff3 95%);
+  opacity: 0.74;
+  border-radius: 13px 16px 17px 13px / 13px 19px 12px 15px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* РАЗДЕЛИТЕЛЬ */
+.slot:not(:last-child)::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 13px;
+  right: -15px;
+  width: 16px;
+  height: 84px;
+  background: linear-gradient(0deg, #e4ebf1 0%, #fff 50%, #e4ebf1 100%);
+  border-radius: 7px;
+  opacity: 0.52;
+  z-index: 4;
+  box-shadow: 1px 0 4px #bbb2;
 }
 
 #wordsList {
-  margin-top: 8px;
-  font-size: 18px;
+  margin-top: 16px;
+  font-size: 20px;
+  color: #fff;
+  text-align: center;
+  padding: 0;
 }
 
 #wordsList li {
-  margin-bottom: 4px;
+  margin-bottom: 0;
   display: inline-block;
-  margin-right: 6px;
+  margin-right: 10px;
+  background: #fff2;
+  padding: 2px 11px;
+  border-radius: 7px;
+  font-size: 21px;
+  color: #fff;
 }
 
 #wordsList li.current {
-  background-color: #d2f0ff;
-  color: #155ca5;
+  background: #ffe94b;
+  color: #09346c;
   font-weight: bold;
-  border-radius: 4px;
-  padding: 2px 6px;
+  box-shadow: 0 0 12px #fff8;
+}
+/* === КНОПКИ === */
+button {
+  padding: 18px 48px;
+  font-size: 34px;
+  border-radius: 44px;
+  font-family: inherit;
+  font-weight: 500;
+  background: #e84141;
+  color: #fff;
+  border: 3px solid #b82d2d;
+  box-shadow: 0 4px 22px #d228284c, 0 1.4px 0 #fff;
+  cursor: pointer;
+  margin: 0 auto 22px;
+  display: block;
+  letter-spacing: 1.4px;
+  text-shadow: 0 2px 8px #0002;
+  transition: background 0.16s, transform 0.14s;
+}
+
+button:hover:enabled {
+  background: #a9152e;
+  transform: translateY(2px) scale(1.025);
+}
+
+/* Отключённая */
+button:disabled {
+  opacity: 0.55;
+  background: #a1a1a1;
+  color: #f5f6f6;
+  border-color: #888;
+  cursor: not-allowed;
+}
+
+label, select, #listTitle {
+  color: #fff4;
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+
+select {
+  margin-left: 10px;
+  padding: 2.2px 7.5px;
+  font-size: 20px;
+}
+
+#listTitle {
+  color: #fffbe8;
+  font-size: 22px;
+  padding-top: 14px;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 690px) {
+  .slot {
+    width: 36px;
+    height: 63px;
+    font-size: 33px;
+    margin: 0 2.5px;
+    border-radius: 7px;
+    min-width: unset;
+    min-height: unset;
+  }
+  #wordDisplay {
+    min-height: 54px;
+    padding: 12px 3px 19px 3px;
+    max-width: 99vw;
+  }
+  button {
+    font-size: 19px;
+    padding: 12px 20px;
+    border-radius: 30px;
+  }
+  textarea {
+    width: 92vw;
+    font-size: 13.4px;
+  }
+  h1, #gameTitle {
+    font-size: 19.2px;
+  }
 }
