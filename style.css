@@ -1,11 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
 
+body.theme-blue {
+  background: #184356;
+}
+body.theme-dark {
+  background: #191c21;
+}
+body.theme-pink {
+  background: #e04b82;
+}
+.theme-blue #main, .theme-blue #game {
+  background: #ffffff05;
+}
+.theme-dark #main, .theme-dark #game {
+  background: #fff1;
+}
+.theme-pink #main, .theme-pink #game {
+  background: #ffe8f71a;
+}
+
 body {
   font-family: 'Patrick Hand', Arial, sans-serif;
   margin: 0;
   min-height: 100vh;
-  background: #184356;
-  /* Две большие закрашенные "звезды" для антуража, можно добавить больше иконок */
+  transition: background 0.4s;
+  /* Базовые звездочки */
   background-image:
     url('https://cdn.pixabay.com/photo/2013/07/12/17/00/star-150837_1280.png'),
     url('https://cdn.pixabay.com/photo/2013/07/12/17/00/star-150837_1280.png');
@@ -22,6 +41,7 @@ body {
   padding: 18px 12px 44px 12px;
   border-radius: 20px;
   box-shadow: 0 9px 48px #0001, 0 0 0 8px #fff1;
+  transition: background 0.4s;
 }
 
 h1, #gameTitle {
@@ -66,6 +86,7 @@ textarea {
   box-shadow: 0 2px 33px #0001, 0 0 0 8px #fff3 inset;
   max-width: 85vw;
   min-height: 115px;
+  font-family: var(--gameFont, 'Patrick Hand', Arial, sans-serif);
 }
 
 .slot {
@@ -78,7 +99,7 @@ textarea {
   box-shadow: 0 7px 40px #0002, 0 1.5px 0 #fff, 0 0 12px #abbedc59 inset;
   border: 5px solid #d2dbe5;
   margin: 0 10px;
-  font-family: 'Patrick Hand', Arial, sans-serif;
+  font-family: inherit;
   font-size: 70px;
   color: #1c1b1c;
   justify-content: center;
@@ -88,7 +109,25 @@ textarea {
   z-index: 2;
 }
 
-/* БЛИК */
+body.theme-dark .slot, body.theme-dark button {
+  background: linear-gradient(180deg, #232733 0%, #15161b 90%);
+  color: #fff;
+}
+
+body.theme-dark .slot {
+  border: 5px solid #575d64;
+}
+
+body.theme-pink .slot {
+  background: linear-gradient(180deg, #fff7fa 0%, #f8c3da 70%, #f77fb7 100%);
+  border: 5px solid #ffc5e3;
+}
+
+body.theme-pink button {
+  background: #f1276e;
+  border-color: #d8005a;
+}
+
 .slot::before {
   content: "";
   position: absolute;
@@ -103,7 +142,6 @@ textarea {
   z-index: 1;
 }
 
-/* РАЗДЕЛИТЕЛЬ */
 .slot:not(:last-child)::after {
   content: "";
   display: block;
@@ -119,31 +157,6 @@ textarea {
   box-shadow: 1px 0 4px #bbb2;
 }
 
-#wordsList {
-  margin-top: 16px;
-  font-size: 20px;
-  color: #fff;
-  text-align: center;
-  padding: 0;
-}
-
-#wordsList li {
-  margin-bottom: 0;
-  display: inline-block;
-  margin-right: 10px;
-  background: #fff2;
-  padding: 2px 11px;
-  border-radius: 7px;
-  font-size: 21px;
-  color: #fff;
-}
-
-#wordsList li.current {
-  background: #ffe94b;
-  color: #09346c;
-  font-weight: bold;
-  box-shadow: 0 0 12px #fff8;
-}
 /* === КНОПКИ === */
 button {
   padding: 18px 48px;
@@ -184,7 +197,7 @@ label, select, #listTitle {
 }
 
 select {
-  margin-left: 10px;
+  margin-left: 6px;
   padding: 2.2px 7.5px;
   font-size: 20px;
 }
@@ -195,6 +208,32 @@ select {
   padding-top: 14px;
   text-align: center;
   letter-spacing: 1px;
+}
+
+#wordsList {
+  margin-top: 16px;
+  font-size: 20px;
+  color: #fff;
+  text-align: center;
+  padding: 0;
+}
+
+#wordsList li {
+  margin-bottom: 0;
+  display: inline-block;
+  margin-right: 10px;
+  background: #fff2;
+  padding: 2px 11px;
+  border-radius: 7px;
+  font-size: 21px;
+  color: #fff;
+}
+
+#wordsList li.current {
+  background: #ffe94b;
+  color: #09346c;
+  font-weight: bold;
+  box-shadow: 0 0 12px #fff8;
 }
 
 @media (max-width: 690px) {
