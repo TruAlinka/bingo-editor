@@ -44,6 +44,22 @@ let currentLang = 'ru';
 let currentWord = null;
 let animating = false;
 
+window.onload = function() {
+  document.body.classList.add('theme-blue');
+  document.documentElement.style.setProperty('--gameFont', `'Patrick Hand', Arial, sans-serif`);
+};
+
+// ТЕМЫ
+document.getElementById('themeSelect').addEventListener('change', function() {
+  document.body.classList.remove('theme-blue', 'theme-dark', 'theme-pink');
+  document.body.classList.add('theme-' + this.value);
+});
+
+// ШРИФТЫ
+document.getElementById('fontSelect').addEventListener('change', function() {
+  document.documentElement.style.setProperty('--gameFont', `'${this.value}', Arial, sans-serif`);
+});
+
 function updateLangUI() {
   document.getElementById('title').textContent = texts[currentLang].mainTitle;
   document.getElementById('wordsInput').placeholder = texts[currentLang].placeholder;
@@ -83,16 +99,25 @@ function renderWordsList(current) {
   });
 }
 
-// Буквы для случайной анимации (кириллица + латиница верхний/нижний регистр)
+// Используем список только на главном экране!
+function showWordsListOnMain() {
+  renderWordsList(null);
+  document.getElementById('listTitle').style.display = '';
+  document.getElementById('wordsList').style.display = '';
+}
+function hideWordsListOnGame() {
+  document.getElementById('listTitle').style.display = 'none';
+  document.getElementById('wordsList').style.display = 'none';
+}
+
+// Буквы для анимации
 const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯabcdefghijklmnopqrstuvwxyzабвгдеёжзийклмнопрстуфхцчшщъыьэюя';
 
 function animateSlotsWord(word, callback) {
   const display = document.getElementById('wordDisplay');
-  display.innerHTML = ''; // очистить предыдущее
-
+  display.innerHTML = '';
   animating = true;
   let finishedSlots = 0;
-
   // для каждого символа создаем span-слот
   let slots = [];
   for (let i = 0; i < word.length; i++) {
@@ -102,10 +127,9 @@ function animateSlotsWord(word, callback) {
     display.appendChild(span);
     slots.push(span);
   }
-
   // для каждой буквы — своя анимация
   slots.forEach((slot, i) => {
-    let cycles = 8 + Math.floor(Math.random() * 5); // немного разное число миганий для красоты
+    let cycles = 8 + Math.floor(Math.random() * 5);
     let counter = 0;
     let interval = setInterval(() => {
       if (counter < cycles) {
@@ -132,7 +156,7 @@ function showRandomWord() {
         currentLang === "es" ? "¡Todas las palabras usadas!" : "Alle Wörter benutzt!"
       );
     document.getElementById('nextWordBtn').disabled = true;
-    renderWordsList(null);
+    hideWordsListOnGame();
     return;
   }
   const index = Math.floor(Math.random() * words.length);
@@ -140,7 +164,7 @@ function showRandomWord() {
   used.push(word);
   currentWord = word;
   document.getElementById('nextWordBtn').disabled = true;
-  renderWordsList(word);
+  hideWordsListOnGame();
   animateSlotsWord(word, () => {
     document.getElementById('nextWordBtn').disabled = false;
   });
@@ -160,9 +184,11 @@ document.getElementById('restartBtn').onclick = function() {
   allWords = [];
   used = [];
   currentWord = null;
-  renderWordsList(null);
+  showWordsListOnMain();
   updateLangUI();
   animating = false;
 };
 
+// Изначально показать список слов только на главном экране
+showWordsListOnMain();
 updateLangUI();
