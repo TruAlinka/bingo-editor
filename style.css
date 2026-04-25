@@ -27,6 +27,8 @@ button {
   font-weight: bold;
   color: #1363c6;
   margin-bottom: 20px;
+  min-height: 40px;
+  letter-spacing: 2px;
 }
 
 #wordsList {
@@ -36,6 +38,8 @@ button {
 
 #wordsList li {
   margin-bottom: 4px;
+  display: inline-block;
+  margin-right: 6px;
 }
 
 #wordsList li.current {
@@ -44,5 +48,4 @@ button {
   font-weight: bold;
   border-radius: 4px;
   padding: 2px 6px;
-  display: inline-block;
 }
