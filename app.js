@@ -1,40 +1,121 @@
-// Оставьте texts, updateLangUI, renderWordsList и обработчики, как они есть выше (index.html и style.css без изменений).
+const texts = {
+  'ru': {
+    mainTitle: "Ввод слов для игры",
+    placeholder: "Введите слова, по одному на строке",
+    start: "Начать игру",
+    gameTitle: "Случайное слово:",
+    next: "Следующее слово",
+    restart: "Начать заново",
+    listTitle: "Ваш список слов:"
+  },
+  'en': {
+    mainTitle: "Enter words for the game",
+    placeholder: "Enter words, one per line",
+    start: "Start game",
+    gameTitle: "Random word:",
+    next: "Next word",
+    restart: "Restart",
+    listTitle: "Your word list:"
+  },
+  'es': {
+    mainTitle: "Introduce las palabras para el juego",
+    placeholder: "Introduce palabras, una por línea",
+    start: "Comenzar el juego",
+    gameTitle: "Palabra aleatoria:",
+    next: "Siguiente palabra",
+    restart: "Reiniciar",
+    listTitle: "Tu lista de palabras:"
+  },
+  'de': {
+    mainTitle: "Wörter für das Spiel eingeben",
+    placeholder: "Wörter eingeben, eins pro Zeile",
+    start: "Spiel starten",
+    gameTitle: "Zufälliges Wort:",
+    next: "Nächstes Wort",
+    restart: "Neu starten",
+    listTitle: "Deine Wörterliste:"
+  }
+};
 
-// Новая анимация "перелистывания" букв:
-const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯabcdefghijklmnopqrstuvwxyzабвгдеёжзийклмнопрстуфхцчшщъыьэюя";
-
+let allWords = [];
+let words = [];
+let used = [];
+let currentLang = 'ru';
+let currentWord = null;
 let animating = false;
+
+function updateLangUI() {
+  document.getElementById('title').textContent = texts[currentLang].mainTitle;
+  document.getElementById('wordsInput').placeholder = texts[currentLang].placeholder;
+  document.getElementById('startBtn').textContent = texts[currentLang].start;
+  document.getElementById('gameTitle').textContent = texts[currentLang].gameTitle;
+  document.getElementById('nextWordBtn').textContent = texts[currentLang].next;
+  document.getElementById('restartBtn').textContent = texts[currentLang].restart;
+  document.getElementById('listTitle').textContent = texts[currentLang].listTitle;
+}
+
+document.getElementById('langSelect').addEventListener('change', function() {
+  currentLang = this.value;
+  updateLangUI();
+});
+
+document.getElementById('startBtn').onclick = function() {
+  allWords = document.getElementById('wordsInput').value.split('\n').map(w => w.trim()).filter(w => w);
+  if (allWords.length === 0) return;
+  words = allWords.slice();
+  used = [];
+  document.getElementById('main').style.display = 'none';
+  document.getElementById('game').style.display = '';
+  document.getElementById('nextWordBtn').disabled = false;
+  showRandomWord();
+};
+
+function renderWordsList(current) {
+  const list = document.getElementById('wordsList');
+  list.innerHTML = '';
+  allWords.forEach(word => {
+    const li = document.createElement('li');
+    li.textContent = word;
+    if (word === current) {
+      li.classList.add('current');
+    }
+    list.appendChild(li);
+  });
+}
+
+// Буквы для случайной анимации (кириллица + латиница верхний/нижний регистр)
+const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯabcdefghijklmnopqrstuvwxyzабвгдеёжзийклмнопрстуфхцчшщъыьэюя';
 
 function animateWord(word, callback) {
   const container = document.getElementById('wordDisplay');
   container.textContent = '';
   animating = true;
   let current = Array(word.length).fill("");
-  let step = 0;
+  let pos = 0;
 
   function animateLetter(pos) {
     if (pos >= word.length) {
-      // Закончить
       animating = false;
       container.textContent = word;
       if (callback) callback();
       return;
     }
-    let intervalCount = 0;
-    const cycles = 5; // сколько раз "мигать" буквы перед итоговой
+    let cycles = 0;
+    const maxCycles = 5;
     const origLetter = word[pos];
-    let interval = setInterval(() => {
-      if (intervalCount < cycles) {
-        current[pos] = alphabet[Math.floor(Math.random() * alphabet.length)];
+
+    const interval = setInterval(() => {
+      if (cycles < maxCycles) {
+        current[pos] = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
         container.textContent = current.join('');
-        intervalCount++;
+        cycles++;
       } else {
         clearInterval(interval);
         current[pos] = origLetter;
         container.textContent = current.join('');
         animateLetter(pos + 1);
       }
-    }, 50); // скорость анимации (мс)
+    }, 50);
   }
   animateLetter(0);
 }
@@ -62,7 +143,7 @@ function showRandomWord() {
 }
 
 document.getElementById('nextWordBtn').onclick = function() {
-  if (animating) return; // запретить нажатие пока идёт анимация
+  if (animating) return;
   showRandomWord();
 };
 
