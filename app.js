@@ -86,38 +86,42 @@ function renderWordsList(current) {
 // Буквы для случайной анимации (кириллица + латиница верхний/нижний регистр)
 const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯabcdefghijklmnopqrstuvwxyzабвгдеёжзийклмнопрстуфхцчшщъыьэюя';
 
-function animateWord(word, callback) {
-  const container = document.getElementById('wordDisplay');
-  container.textContent = '';
+function animateSlotsWord(word, callback) {
+  const display = document.getElementById('wordDisplay');
+  display.innerHTML = ''; // очистить предыдущее
+
   animating = true;
-  let current = Array(word.length).fill("");
-  let pos = 0;
+  let finishedSlots = 0;
 
-  function animateLetter(pos) {
-    if (pos >= word.length) {
-      animating = false;
-      container.textContent = word;
-      if (callback) callback();
-      return;
-    }
-    let cycles = 0;
-    const maxCycles = 5;
-    const origLetter = word[pos];
+  // для каждого символа создаем span-слот
+  let slots = [];
+  for (let i = 0; i < word.length; i++) {
+    let span = document.createElement('span');
+    span.className = 'slot';
+    span.textContent = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+    display.appendChild(span);
+    slots.push(span);
+  }
 
-    const interval = setInterval(() => {
-      if (cycles < maxCycles) {
-        current[pos] = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-        container.textContent = current.join('');
-        cycles++;
+  // для каждой буквы — своя анимация
+  slots.forEach((slot, i) => {
+    let cycles = 8 + Math.floor(Math.random() * 5); // немного разное число миганий для красоты
+    let counter = 0;
+    let interval = setInterval(() => {
+      if (counter < cycles) {
+        slot.textContent = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+        counter++;
       } else {
         clearInterval(interval);
-        current[pos] = origLetter;
-        container.textContent = current.join('');
-        animateLetter(pos + 1);
+        slot.textContent = word[i];
+        finishedSlots++;
+        if (finishedSlots === slots.length) {
+          animating = false;
+          if (callback) callback();
+        }
       }
     }, 50);
-  }
-  animateLetter(0);
+  });
 }
 
 function showRandomWord() {
@@ -137,7 +141,7 @@ function showRandomWord() {
   currentWord = word;
   document.getElementById('nextWordBtn').disabled = true;
   renderWordsList(word);
-  animateWord(word, () => {
+  animateSlotsWord(word, () => {
     document.getElementById('nextWordBtn').disabled = false;
   });
 }
