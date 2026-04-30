@@ -1,18 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
 
-/* ... (ВАШИ ЦВЕТА/ТЕМЫ ОСТАЮТСЯ ТЕМ ЖЕ, не изменяю) ... */
-
-body.theme-blue {
-  background: #184356;
-}
-body.theme-dark {
-  background: #191c21;
-}
-body.theme-pink {
-  background: #e04b82;
-}
+body.theme-blue { background: #184356; }
 .theme-blue #main, .theme-blue #game { background: #ffffff05; }
+body.theme-dark { background: #191c21; }
 .theme-dark #main, .theme-dark #game { background: #fff1; }
+body.theme-pink { background: #e04b82; }
 .theme-pink #main, .theme-pink #game { background: #ffe8f71a; }
 body.theme-green { background: #197c4a; }
 .theme-green #main, .theme-green #game { background: #fafff7; }
@@ -35,8 +27,6 @@ body {
   background-repeat: no-repeat, no-repeat;
   background-position: 10% 25%, 85% 78%;
 }
-
-/* ... (ВАШИ СЛОТЫ/ТЕКСТ/LIST CSS и пр. БЕЗ изменений) ... */
 
 #main, #game {
   max-width: 900px;
@@ -73,67 +63,76 @@ textarea {
   display: block;
 }
 
-/* ========== Кнопки управления ========== */
-
-.controls {
-  margin-top: 10px;
-}
-
-#nextWordBtn {
-  display: block;
-  margin: 0 auto 22px auto;
-  background: #ffb26e;
-  color: #fff;
-  border-color: #ec8b39;
-  box-shadow: 0 3px 16px #fdccae5c;
-  font-size: 32px;
-  width: 350px;
-  max-width: 90vw;
-}
-.double-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-#restartGameBtn, #backBtn {
-  width: 200px;
-  max-width: 40vw;
-  font-size: 23px;
-  margin: 0;
-  margin-bottom: 20px;
-  padding: 13px 2px;
-  border-radius: 32px;
-  box-shadow: 0 3px 15px #aaa3;
-  font-family: inherit;
-}
-#restartGameBtn {
-  background: #479eff;
-  border-color: #155daf;
-  color: #fff;
-}
-#restartGameBtn:hover:enabled {
-  background: #226bdb;
-}
-#backBtn {
-  background: #bbbbbb;
-  border-color: #888;
-  color: #212121;
-}
-#backBtn:hover:enabled {
-  background: #999999;
-}
-
-/* Финальная фраза */
-.finish-phrase {
+/* === Буквенные плашки (slots) === */
+#wordDisplay {
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #ff8800;
-  font-size: 2.2em;
-  font-weight: bold;
-  margin: 40px 0 28px 0;
-  gap: 10px;
-  line-height: 1.2;
+  background: #ffffff15;
+  border-radius: 32px;
+  margin: 38px auto 10px auto;
+  padding: 32px 17px 34px 17px;
+  box-shadow: 0 2px 33px #0001, 0 0 0 8px #fff3 inset;
+  max-width: 85vw;
+  min-height: 115px;
+  font-family: var(--gameFont, 'Patrick Hand', Arial, sans-serif);
+}
+.slot {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-family: inherit;
+  font-size: 70px;
+  color: #222;
+  min-width: 75px;
+  min-height: 90px;
+  margin: 0 9px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #fff4e5 0%, #ffd3a2 100%);
+  box-shadow: 0 7px 40px #0002, 0 1.5px 0 #fff, 0 0 12px #abbedc2b inset;
+  border: 4px solid #bed0e6;
+  position: relative;
+  transition: background 0.15s;
+}
+.slot::before {
+  content: "";
+  position: absolute;
+  left: 13px; right: 13px; top: 11px; height: 23px;
+  background: linear-gradient(90deg, #fff9 55%, #fff1 95%);
+  opacity: 0.7;
+  border-radius: 13px 16px 17px 13px / 13px 19px 12px 15px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Кнопки */
+.controls { margin-top: 10px; }
+#nextWordBtn {
+  display: block; margin: 0 auto 22px auto;
+  background: #ffb26e; color: #fff; border-color: #ec8b39;
+  box-shadow: 0 3px 16px #fdccae5c;
+  font-size: 32px; width: 350px; max-width: 90vw;
+}
+.double-buttons { display: flex; justify-content: center; gap: 20px; }
+#restartGameBtn, #backBtn {
+  width: 200px; max-width: 40vw; font-size: 23px;
+  margin: 0; margin-bottom: 20px; padding: 13px 2px;
+  border-radius: 32px; box-shadow: 0 3px 15px #aaa3;
+  font-family: inherit;
+}
+#restartGameBtn {
+  background: #479eff; border-color: #155daf; color: #fff;
+}
+#restartGameBtn:hover:enabled { background: #226bdb; }
+#backBtn {
+  background: #bbbbbb; border-color: #888; color: #212121;
+}
+#backBtn:hover:enabled { background: #999999; }
+
+.finish-phrase {
+  display: flex; justify-content: center; align-items: center;
+  color: #ff8800; font-size: 2.2em; font-weight: bold;
+  margin: 40px 0 28px 0; gap: 10px; line-height: 1.2;
   text-shadow: 0 3px 26px #fff7, 0 1px 0 #fff, 0 4px #ffcb8b55;
 }
 
@@ -144,4 +143,21 @@ textarea {
   .finish-phrase { font-size: 1.22em; }
 }
 
-/* ... (Остальные ваши стили/слоты/темы/красивости без изменений) ... */
+#listTitle {
+  color: #fffbe8;
+  font-size: 22px;
+  padding-top: 14px;
+  text-align: center;
+}
+#wordsList {
+  margin-top: 10px; font-size: 20px; color: #fff;
+  text-align: center; padding: 0; display: none;
+}
+#wordsList li {
+  margin-bottom: 0; display: inline-block;
+  margin-right: 10px; background: #fff2;
+  padding: 2px 11px; border-radius: 7px; font-size: 21px; color: #fff;
+}
+#wordsList li.current {
+  background: #ffe94b; color: #09346c; font-weight: bold; box-shadow: 0 0 12px #fff8;
+}
