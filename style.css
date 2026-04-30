@@ -63,6 +63,29 @@ textarea {
   display: block;
 }
 
+/* === КРУПНАЯ КНОПКА СТАРТ === */
+#startBtn {
+  padding: 18px 48px;
+  font-size: 34px;
+  border-radius: 44px;
+  font-family: inherit;
+  font-weight: 500;
+  background: #e84141;
+  color: #fff;
+  border: 3px solid #b82d2d;
+  box-shadow: 0 4px 22px #d228284c, 0 1.4px 0 #fff;
+  cursor: pointer;
+  margin: 36px 0 22px 0;
+  letter-spacing: 1.4px;
+  text-shadow: 0 2px 8px #0002;
+  transition: background 0.16s, transform 0.14s;
+  display: block;
+}
+#startBtn:hover:enabled {
+  background: #a9152e;
+  transform: translateY(2px) scale(1.025);
+}
+
 /* === Буквенные плашки (slots) === */
 #wordDisplay {
   display: flex;
@@ -105,7 +128,6 @@ textarea {
   z-index: 1;
 }
 
-/* Кнопки */
 .controls { margin-top: 10px; }
 #nextWordBtn {
   display: block; margin: 0 auto 22px auto;
@@ -141,23 +163,4 @@ textarea {
   .double-buttons { gap: 9px; }
   #restartGameBtn, #backBtn { width: 44vw; font-size: 16.5px;}
   .finish-phrase { font-size: 1.22em; }
-}
-
-#listTitle {
-  color: #fffbe8;
-  font-size: 22px;
-  padding-top: 14px;
-  text-align: center;
-}
-#wordsList {
-  margin-top: 10px; font-size: 20px; color: #fff;
-  text-align: center; padding: 0; display: none;
-}
-#wordsList li {
-  margin-bottom: 0; display: inline-block;
-  margin-right: 10px; background: #fff2;
-  padding: 2px 11px; border-radius: 7px; font-size: 21px; color: #fff;
-}
-#wordsList li.current {
-  background: #ffe94b; color: #09346c; font-weight: bold; box-shadow: 0 0 12px #fff8;
 }
