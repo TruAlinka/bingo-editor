@@ -18,13 +18,20 @@ body.theme-pink {
 .theme-pink #main, .theme-pink #game {
   background: #ffe8f71a;
 }
+body.theme-green { background: #197c4a; }
+.theme-green #main, .theme-green #game { background: #fafff7; }
+body.theme-yellow { background: #f5e572; }
+.theme-yellow #main, .theme-yellow #game { background: #fefce48c; }
+body.theme-orange { background: #ff954a; }
+.theme-orange #main, .theme-orange #game { background: #fff4e1; }
+body.theme-purple { background: #7d54a7; }
+.theme-purple #main, .theme-purple #game { background: #f8f5ff; }
 
 body {
   font-family: 'Patrick Hand', Arial, sans-serif;
   margin: 0;
   min-height: 100vh;
   transition: background 0.4s;
-  /* Базовые звездочки */
   background-image:
     url('https://cdn.pixabay.com/photo/2013/07/12/17/00/star-150837_1280.png'),
     url('https://cdn.pixabay.com/photo/2013/07/12/17/00/star-150837_1280.png');
@@ -128,6 +135,36 @@ body.theme-pink button {
   border-color: #d8005a;
 }
 
+body.theme-green .slot {
+  background: linear-gradient(180deg, #ebe 0%, #c0f0e2 90%);
+}
+body.theme-green button {
+  background: #2ad487;
+  border-color: #109959;
+}
+body.theme-yellow .slot {
+  background: linear-gradient(180deg, #fdfaeb 0%, #f6f1bb 90%);
+}
+body.theme-yellow button {
+  background: #fae685;
+  color: #412c00;
+  border-color: #b5ac67;
+}
+body.theme-orange .slot {
+  background: linear-gradient(180deg, #fdf1e5 0%, #ffd1a2 90%);
+}
+body.theme-orange button {
+  background: #ffa45d;
+  border-color: #e67d13;
+}
+body.theme-purple .slot {
+  background: linear-gradient(180deg, #fdf4ff 0%, #b394e9 100%);
+}
+body.theme-purple button {
+  background: #b77aff;
+  border-color: #874cf7;
+}
+
 .slot::before {
   content: "";
   position: absolute;
@@ -190,6 +227,27 @@ button:disabled {
   cursor: not-allowed;
 }
 
+/* Специальные кнопки */
+#restartGameBtn {
+  background: #4d96ff;
+  border-color: #155daf;
+  color: #fff;
+  margin-top: 16px;
+}
+#restartGameBtn:hover:enabled {
+  background: #226bdb;
+}
+#backBtn {
+  background: #bbbbbb;
+  border-color: #888;
+  color: #212121;
+  margin-top: 6px;
+  margin-bottom: 10px;
+}
+#backBtn:hover:enabled {
+  background: #999999;
+}
+
 label, select, #listTitle {
   color: #fff4;
   font-size: 22px;
@@ -211,11 +269,12 @@ select {
 }
 
 #wordsList {
-  margin-top: 16px;
+  margin-top: 10px;
   font-size: 20px;
   color: #fff;
   text-align: center;
   padding: 0;
+  display: none;
 }
 
 #wordsList li {
