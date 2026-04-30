@@ -38,6 +38,7 @@ const texts = {
 };
 
 let allWords = [];
+let originalWords = [];
 let words = [];
 let used = [];
 let currentLang = 'ru';
@@ -47,15 +48,14 @@ let animating = false;
 window.onload = function() {
   document.body.classList.add('theme-blue');
   document.documentElement.style.setProperty('--gameFont', `'Patrick Hand', Arial, sans-serif`);
+  showWordsListOnMain();
 };
 
-// ТЕМЫ
 document.getElementById('themeSelect').addEventListener('change', function() {
-  document.body.classList.remove('theme-blue', 'theme-dark', 'theme-pink');
+  document.body.classList.remove('theme-blue', 'theme-dark', 'theme-pink', 'theme-green', 'theme-yellow', 'theme-orange', 'theme-purple');
   document.body.classList.add('theme-' + this.value);
 });
 
-// ШРИФТЫ
 document.getElementById('fontSelect').addEventListener('change', function() {
   document.documentElement.style.setProperty('--gameFont', `'${this.value}', Arial, sans-serif`);
 });
@@ -66,6 +66,7 @@ function updateLangUI() {
   document.getElementById('startBtn').textContent = texts[currentLang].start;
   document.getElementById('gameTitle').textContent = texts[currentLang].gameTitle;
   document.getElementById('nextWordBtn').textContent = texts[currentLang].next;
+  document.getElementById('restartGameBtn').textContent = "Рестарт (те же слова)";
   document.getElementById('restartBtn').textContent = texts[currentLang].restart;
   document.getElementById('listTitle').textContent = texts[currentLang].listTitle;
 }
@@ -73,23 +74,31 @@ function updateLangUI() {
 document.getElementById('langSelect').addEventListener('change', function() {
   currentLang = this.value;
   updateLangUI();
+  showWordsListOnMain();
+});
+
+// Динамический список на стартовой странице
+document.getElementById('wordsInput').addEventListener('input', function() {
+  showWordsListOnMain();
 });
 
 document.getElementById('startBtn').onclick = function() {
   allWords = document.getElementById('wordsInput').value.split('\n').map(w => w.trim()).filter(w => w);
   if (allWords.length === 0) return;
+  originalWords = allWords.slice();
   words = allWords.slice();
   used = [];
   document.getElementById('main').style.display = 'none';
   document.getElementById('game').style.display = '';
   document.getElementById('nextWordBtn').disabled = false;
+  hideWordsListOnGame();
   showRandomWord();
 };
 
-function renderWordsList(current) {
+function renderWordsList(current, arr) {
   const list = document.getElementById('wordsList');
   list.innerHTML = '';
-  allWords.forEach(word => {
+  (arr || allWords).forEach(word => {
     const li = document.createElement('li');
     li.textContent = word;
     if (word === current) {
@@ -99,11 +108,21 @@ function renderWordsList(current) {
   });
 }
 
-// Используем список только на главном экране!
+// Отображение списка ВВЕДЕННЫХ слов на главной
 function showWordsListOnMain() {
-  renderWordsList(null);
-  document.getElementById('listTitle').style.display = '';
-  document.getElementById('wordsList').style.display = '';
+  const wordsArr = document.getElementById('wordsInput').value
+    .split('\n')
+    .map(w => w.trim())
+    .filter(w => w);
+  if (wordsArr.length) {
+    document.getElementById('listTitle').style.display = '';
+    document.getElementById('listTitle').textContent = texts[currentLang].listTitle;
+    document.getElementById('wordsList').style.display = '';
+  } else {
+    document.getElementById('listTitle').style.display = 'none';
+    document.getElementById('wordsList').style.display = 'none';
+  }
+  renderWordsList(null, wordsArr);
 }
 function hideWordsListOnGame() {
   document.getElementById('listTitle').style.display = 'none';
@@ -118,7 +137,6 @@ function animateSlotsWord(word, callback) {
   display.innerHTML = '';
   animating = true;
   let finishedSlots = 0;
-  // для каждого символа создаем span-слот
   let slots = [];
   for (let i = 0; i < word.length; i++) {
     let span = document.createElement('span');
@@ -127,7 +145,6 @@ function animateSlotsWord(word, callback) {
     display.appendChild(span);
     slots.push(span);
   }
-  // для каждой буквы — своя анимация
   slots.forEach((slot, i) => {
     let cycles = 8 + Math.floor(Math.random() * 5);
     let counter = 0;
@@ -175,6 +192,25 @@ document.getElementById('nextWordBtn').onclick = function() {
   showRandomWord();
 };
 
+// Рестарт (только в рамках тех же слов)
+document.getElementById('restartGameBtn').onclick = function() {
+  if (animating) return;
+  words = originalWords.slice();
+  used = [];
+  document.getElementById('nextWordBtn').disabled = false;
+  showRandomWord();
+};
+
+// Назад к меню, не стирая слова
+document.getElementById('backBtn').onclick = function() {
+  if (animating) return;
+  document.getElementById('game').style.display = 'none';
+  document.getElementById('main').style.display = '';
+  showWordsListOnMain();
+  animating = false;
+};
+
+// Стандартная кнопка “Начать заново” (полная очистка и возврат на старт)
 document.getElementById('restartBtn').onclick = function() {
   document.getElementById('game').style.display = 'none';
   document.getElementById('main').style.display = '';
@@ -182,6 +218,7 @@ document.getElementById('restartBtn').onclick = function() {
   document.getElementById('wordDisplay').textContent = '';
   words = [];
   allWords = [];
+  originalWords = [];
   used = [];
   currentWord = null;
   showWordsListOnMain();
@@ -189,6 +226,6 @@ document.getElementById('restartBtn').onclick = function() {
   animating = false;
 };
 
-// Изначально показать список слов только на главном экране
+// Первоначальное состояние + язык + список
 showWordsListOnMain();
 updateLangUI();
