@@ -170,9 +170,9 @@ function animateSlotsWord(word, callback) {
 }
 
 function showRandomWord() {
+  const display = document.getElementById('wordDisplay');
   if (words.length === 0) {
-    document.getElementById('wordDisplay').innerHTML =
-      `<div class="finish-phrase">${texts[currentLang].finish}</div>`;
+    display.innerHTML = `<div class="finish-phrase">${texts[currentLang].finish}</div>`;
     document.getElementById('nextWordBtn').disabled = true;
     hideWordsListOnGame();
     return;
