@@ -23,6 +23,10 @@
         <option value="blue">Синяя</option>
         <option value="dark">Темная</option>
         <option value="pink">Розовая</option>
+        <option value="green">Зеленая</option>
+        <option value="yellow">Желтая</option>
+        <option value="orange">Оранжевая</option>
+        <option value="purple">Фиолетовая</option>
       </select>
       <label for="fontSelect" style="margin-left: 20px;">Шрифт:</label>
       <select id="fontSelect">
@@ -35,14 +39,15 @@
     <textarea id="wordsInput" rows="8" cols="40" placeholder="Введите слова, по одному на строке"></textarea>
     <br>
     <button id="startBtn">Начать игру</button>
-    <div id="listTitle" style="margin-top:20px;font-weight:bold;"></div>
-    <ul id="wordsList"></ul>
+    <div id="listTitle" style="margin-top:18px;font-weight:bold; display:none;"></div>
+    <ul id="wordsList" style="display:none"></ul>
   </div>
   <div id="game" style="display:none;">
     <h1 id="gameTitle">Случайное слово:</h1>
     <div id="wordDisplay"></div>
     <button id="nextWordBtn">Следующее слово</button>
-    <button id="restartBtn">Начать заново</button>
+    <button id="restartGameBtn" style="margin-top:12px;">Рестарт (те же слова)</button>
+    <button id="backBtn" style="margin-top:2px;">Назад к меню</button>
   </div>
   <script src="app.js"></script>
 </body>
