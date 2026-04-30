@@ -5,7 +5,9 @@ const texts = {
     start: "Начать игру",
     gameTitle: "Случайное слово:",
     next: "Следующее слово",
-    restart: "Начать заново",
+    restart: "Рестарт (те же слова)",
+    back: "Назад к меню",
+    finish: "Все слова отгаданы! 🎉🎉🎉",
     listTitle: "Ваш список слов:"
   },
   'en': {
@@ -14,7 +16,9 @@ const texts = {
     start: "Start game",
     gameTitle: "Random word:",
     next: "Next word",
-    restart: "Restart",
+    restart: "Restart (same words)",
+    back: "Back to menu",
+    finish: "All words done! 🎉🎉🎉",
     listTitle: "Your word list:"
   },
   'es': {
@@ -23,7 +27,9 @@ const texts = {
     start: "Comenzar el juego",
     gameTitle: "Palabra aleatoria:",
     next: "Siguiente palabra",
-    restart: "Reiniciar",
+    restart: "Reiniciar (mismas palabras)",
+    back: "Volver al menú",
+    finish: "¡Todas las palabras usadas! 🎉🎉🎉",
     listTitle: "Tu lista de palabras:"
   },
   'de': {
@@ -32,7 +38,9 @@ const texts = {
     start: "Spiel starten",
     gameTitle: "Zufälliges Wort:",
     next: "Nächstes Wort",
-    restart: "Neu starten",
+    restart: "Nochmal (gleiche Wörter)",
+    back: "Zurück zum Menü",
+    finish: "Alle Wörter benutzt! 🎉🎉🎉",
     listTitle: "Deine Wörterliste:"
   }
 };
@@ -52,7 +60,9 @@ window.onload = function() {
 };
 
 document.getElementById('themeSelect').addEventListener('change', function() {
-  document.body.classList.remove('theme-blue', 'theme-dark', 'theme-pink', 'theme-green', 'theme-yellow', 'theme-orange', 'theme-purple');
+  document.body.classList.remove(
+    'theme-blue', 'theme-dark', 'theme-pink', 'theme-green', 'theme-yellow',
+    'theme-orange', 'theme-purple');
   document.body.classList.add('theme-' + this.value);
 });
 
@@ -66,7 +76,8 @@ function updateLangUI() {
   document.getElementById('startBtn').textContent = texts[currentLang].start;
   document.getElementById('gameTitle').textContent = texts[currentLang].gameTitle;
   document.getElementById('nextWordBtn').textContent = texts[currentLang].next;
-  document.getElementById('restartGameBtn').textContent = "Рестарт (те же слова)";
+  document.getElementById('restartGameBtn').textContent = texts[currentLang].restart;
+  document.getElementById('backBtn').textContent = texts[currentLang].back;
   document.getElementById('restartBtn').textContent = texts[currentLang].restart;
   document.getElementById('listTitle').textContent = texts[currentLang].listTitle;
 }
@@ -77,7 +88,6 @@ document.getElementById('langSelect').addEventListener('change', function() {
   showWordsListOnMain();
 });
 
-// Динамический список на стартовой странице
 document.getElementById('wordsInput').addEventListener('input', function() {
   showWordsListOnMain();
 });
@@ -101,19 +111,14 @@ function renderWordsList(current, arr) {
   (arr || allWords).forEach(word => {
     const li = document.createElement('li');
     li.textContent = word;
-    if (word === current) {
-      li.classList.add('current');
-    }
+    if (word === current) li.classList.add('current');
     list.appendChild(li);
   });
 }
 
-// Отображение списка ВВЕДЕННЫХ слов на главной
 function showWordsListOnMain() {
   const wordsArr = document.getElementById('wordsInput').value
-    .split('\n')
-    .map(w => w.trim())
-    .filter(w => w);
+    .split('\n').map(w => w.trim()).filter(w => w);
   if (wordsArr.length) {
     document.getElementById('listTitle').style.display = '';
     document.getElementById('listTitle').textContent = texts[currentLang].listTitle;
@@ -129,7 +134,6 @@ function hideWordsListOnGame() {
   document.getElementById('wordsList').style.display = 'none';
 }
 
-// Буквы для анимации
 const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯabcdefghijklmnopqrstuvwxyzабвгдеёжзийклмнопрстуфхцчшщъыьэюя';
 
 function animateSlotsWord(word, callback) {
@@ -167,11 +171,8 @@ function animateSlotsWord(word, callback) {
 
 function showRandomWord() {
   if (words.length === 0) {
-    document.getElementById('wordDisplay').textContent = currentLang === "ru"
-      ? "Конец! Слова закончились." : (
-        currentLang === "en" ? "All words done!" :
-        currentLang === "es" ? "¡Todas las palabras usadas!" : "Alle Wörter benutzt!"
-      );
+    document.getElementById('wordDisplay').innerHTML =
+      `<div class="finish-phrase">${texts[currentLang].finish}</div>`;
     document.getElementById('nextWordBtn').disabled = true;
     hideWordsListOnGame();
     return;
@@ -191,8 +192,6 @@ document.getElementById('nextWordBtn').onclick = function() {
   if (animating) return;
   showRandomWord();
 };
-
-// Рестарт (только в рамках тех же слов)
 document.getElementById('restartGameBtn').onclick = function() {
   if (animating) return;
   words = originalWords.slice();
@@ -200,8 +199,6 @@ document.getElementById('restartGameBtn').onclick = function() {
   document.getElementById('nextWordBtn').disabled = false;
   showRandomWord();
 };
-
-// Назад к меню, не стирая слова
 document.getElementById('backBtn').onclick = function() {
   if (animating) return;
   document.getElementById('game').style.display = 'none';
@@ -209,8 +206,6 @@ document.getElementById('backBtn').onclick = function() {
   showWordsListOnMain();
   animating = false;
 };
-
-// Стандартная кнопка “Начать заново” (полная очистка и возврат на старт)
 document.getElementById('restartBtn').onclick = function() {
   document.getElementById('game').style.display = 'none';
   document.getElementById('main').style.display = '';
@@ -226,6 +221,5 @@ document.getElementById('restartBtn').onclick = function() {
   animating = false;
 };
 
-// Первоначальное состояние + язык + список
 showWordsListOnMain();
 updateLangUI();
