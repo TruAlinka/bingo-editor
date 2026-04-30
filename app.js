@@ -105,6 +105,7 @@ document.getElementById('startBtn').onclick = function() {
   showRandomWord();
 };
 
+// ФИКС: renderWordsList всегда принимает массив и выделяет текущий
 function renderWordsList(current, arr) {
   const list = document.getElementById('wordsList');
   list.innerHTML = '';
@@ -116,6 +117,7 @@ function renderWordsList(current, arr) {
   });
 }
 
+// ФИКС: Всегда показывает введённые слова на стартовой
 function showWordsListOnMain() {
   const wordsArr = document.getElementById('wordsInput').value
     .split('\n').map(w => w.trim()).filter(w => w);
@@ -129,6 +131,7 @@ function showWordsListOnMain() {
   }
   renderWordsList(null, wordsArr);
 }
+
 function hideWordsListOnGame() {
   document.getElementById('listTitle').style.display = 'none';
   document.getElementById('wordsList').style.display = 'none';
