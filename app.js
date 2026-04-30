@@ -56,7 +56,6 @@ let animating = false;
 window.onload = function() {
   document.body.classList.add('theme-blue');
   document.documentElement.style.setProperty('--gameFont', `'Patrick Hand', Arial, sans-serif`);
-  showWordsListOnMain();
 };
 
 document.getElementById('themeSelect').addEventListener('change', function() {
@@ -79,17 +78,11 @@ function updateLangUI() {
   document.getElementById('restartGameBtn').textContent = texts[currentLang].restart;
   document.getElementById('backBtn').textContent = texts[currentLang].back;
   document.getElementById('restartBtn').textContent = texts[currentLang].restart;
-  document.getElementById('listTitle').textContent = texts[currentLang].listTitle;
 }
 
 document.getElementById('langSelect').addEventListener('change', function() {
   currentLang = this.value;
   updateLangUI();
-  showWordsListOnMain();
-});
-
-document.getElementById('wordsInput').addEventListener('input', function() {
-  showWordsListOnMain();
 });
 
 document.getElementById('startBtn').onclick = function() {
@@ -101,41 +94,8 @@ document.getElementById('startBtn').onclick = function() {
   document.getElementById('main').style.display = 'none';
   document.getElementById('game').style.display = '';
   document.getElementById('nextWordBtn').disabled = false;
-  hideWordsListOnGame();
   showRandomWord();
 };
-
-// ФИКС: renderWordsList всегда принимает массив и выделяет текущий
-function renderWordsList(current, arr) {
-  const list = document.getElementById('wordsList');
-  list.innerHTML = '';
-  (arr || allWords).forEach(word => {
-    const li = document.createElement('li');
-    li.textContent = word;
-    if (word === current) li.classList.add('current');
-    list.appendChild(li);
-  });
-}
-
-// ФИКС: Всегда показывает введённые слова на стартовой
-function showWordsListOnMain() {
-  const wordsArr = document.getElementById('wordsInput').value
-    .split('\n').map(w => w.trim()).filter(w => w);
-  if (wordsArr.length) {
-    document.getElementById('listTitle').style.display = '';
-    document.getElementById('listTitle').textContent = texts[currentLang].listTitle;
-    document.getElementById('wordsList').style.display = '';
-  } else {
-    document.getElementById('listTitle').style.display = 'none';
-    document.getElementById('wordsList').style.display = 'none';
-  }
-  renderWordsList(null, wordsArr);
-}
-
-function hideWordsListOnGame() {
-  document.getElementById('listTitle').style.display = 'none';
-  document.getElementById('wordsList').style.display = 'none';
-}
 
 const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯabcdefghijklmnopqrstuvwxyzабвгдеёжзийклмнопрстуфхцчшщъыьэюя';
 
@@ -177,7 +137,6 @@ function showRandomWord() {
   if (words.length === 0) {
     display.innerHTML = `<div class="finish-phrase">${texts[currentLang].finish}</div>`;
     document.getElementById('nextWordBtn').disabled = true;
-    hideWordsListOnGame();
     return;
   }
   const index = Math.floor(Math.random() * words.length);
@@ -185,7 +144,6 @@ function showRandomWord() {
   used.push(word);
   currentWord = word;
   document.getElementById('nextWordBtn').disabled = true;
-  hideWordsListOnGame();
   animateSlotsWord(word, () => {
     document.getElementById('nextWordBtn').disabled = false;
   });
@@ -206,7 +164,6 @@ document.getElementById('backBtn').onclick = function() {
   if (animating) return;
   document.getElementById('game').style.display = 'none';
   document.getElementById('main').style.display = '';
-  showWordsListOnMain();
   animating = false;
 };
 document.getElementById('restartBtn').onclick = function() {
@@ -219,10 +176,8 @@ document.getElementById('restartBtn').onclick = function() {
   originalWords = [];
   used = [];
   currentWord = null;
-  showWordsListOnMain();
   updateLangUI();
   animating = false;
 };
 
-showWordsListOnMain();
 updateLangUI();
