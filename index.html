@@ -45,9 +45,14 @@
   <div id="game" style="display:none;">
     <h1 id="gameTitle">Случайное слово:</h1>
     <div id="wordDisplay"></div>
-    <button id="nextWordBtn">Следующее слово</button>
-    <button id="restartGameBtn" style="margin-top:12px;">Рестарт (те же слова)</button>
-    <button id="backBtn" style="margin-top:2px;">Назад к меню</button>
+    <div class="controls">
+      <button id="nextWordBtn">Следующее слово</button>
+      <div class="double-buttons">
+        <button id="restartGameBtn">Рестарт (те же слова)</button>
+        <button id="backBtn">Назад к меню</button>
+      </div>
+    </div>
+    <button id="restartBtn" style="display:none;">Начать заново</button>
   </div>
   <script src="app.js"></script>
 </body>
